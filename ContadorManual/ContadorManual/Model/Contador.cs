@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace ContadorManual.Model
 {
-    public class Contador
+    public class Contador : INotifyPropertyChanged
     {
         private int _Conteo;
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        
         public int Conteo
         {
             get => _Conteo;
@@ -17,6 +20,7 @@ namespace ContadorManual.Model
                 if(_Conteo!=value)
                 {
                     _Conteo = value;
+                    OnPropertyChanged("Conteo");
                 }
             }
         }
@@ -34,6 +38,14 @@ namespace ContadorManual.Model
         public void ReiniciarConteo()
         {
             Conteo = 0;
+        }
+
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
     }
